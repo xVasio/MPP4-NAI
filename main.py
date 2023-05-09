@@ -2,21 +2,20 @@ import csv
 import random
 import math
 
-"""
-Wczytanie danych z pliku csv z pominięciem ostatniej kolumny, która zawiera etykiety.
-"""
+
 def read_csv(file):
-    data = []
+    """
+    Wczytanie danych z pliku csv z pominięciem ostatniej kolumny, która zawiera etykiety.
+    """
     with open(file, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
-        for row in csvreader:
-            data.append(list(map(float, row[:-1])))
-    return data
+        return [list(map(float, row[:-1])) for row in csvreader]
 
-"""
-Metoda obliczająca średnią arytmetyczną puntków dla każdego klastra.
-"""
+
 def mean_centroids(data, assignment, k):
+    """
+    Metoda obliczająca średnią arytmetyczną puntków dla każdego klastra.
+    """
     centroids = []
     for i in range(k):
         cluster_points = [data[j] for j in range(len(data)) if assignment[j] == i]
@@ -24,35 +23,40 @@ def mean_centroids(data, assignment, k):
         centroids.append(centroid)
     return centroids
 
-"""
-Metoda obliczająca odległość euklidesową między dwoma punktami.
-"""
+
 def euclidean_distance(p1, p2):
+    """
+    Metoda obliczająca odległość euklidesową między dwoma punktami.
+    """
     return math.sqrt(sum([(x1 - x2) ** 2 for x1, x2 in zip(p1, p2)]))
 
-"""
-Metoda przypisująca punkty do klastrów na podstawie odległości euklidesowej.
-"""
+
 def assign_to_centroids(data, centroids):
+    """
+    Metoda przypisująca punkty do klastrów na podstawie odległości euklidesowej.
+    """
     assignment = []
     for i in range(len(data)):
         distances = [euclidean_distance(data[i], centroid) for centroid in centroids]
         assignment.append(distances.index(min(distances)))
     return assignment
 
-"""
-Metoda obliczająca sumę kwadratów odległości w klastrach.
-"""
+
 def sum_of_squares(data, centroids, assignment):
+    """
+    Metoda obliczająca sumę kwadratów odległości w klastrach.
+    """
     total = 0
     for i in range(len(data)):
         total += euclidean_distance(data[i], centroids[assignment[i]]) ** 2
     return total
 
-"""
-Metoda implementująca algorytm k-średnich.
-"""
+
 def k_means(data, k):
+    """
+    Metoda implementująca algorytm k-średnich.
+    """
+
     assignment = [random.randint(0, k - 1) for _ in range(len(data))]
     centroids = mean_centroids(data, assignment, k)
 
@@ -84,8 +88,8 @@ def k_means(data, k):
         iteration += 1
 
 
-csv_file = "data.csv"
-print("Podaj liczbę klastrów: ")
-k = int(input())
-data = read_csv(csv_file)
-k_means(data, k)
+if __name__ == '__main__':
+    csv_file = "data.csv"
+    k = int(input("Podaj liczbę klastrów: "))
+    data = read_csv(csv_file)
+    k_means(data, k)
