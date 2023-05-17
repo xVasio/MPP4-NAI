@@ -1,7 +1,9 @@
 import csv
 import random
 import math
-
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans
 
 def read_csv(file):
     """
@@ -157,7 +159,6 @@ def k_means(data, k):
             cluster_points = [data[j] for j in range(len(data)) if assignment[j] == i]
             print(f"  Grupy {i + 1}: {cluster_points}")
         print(f"Suma kwadratów odległości w klastrach: {current_sum}\n")
-
         iteration += 1
 
 
@@ -166,3 +167,16 @@ if __name__ == '__main__':
     k = int(input("Podaj liczbę klastrów: "))
     data = read_csv(csv_file)
     k_means(data, k)
+
+    # Dodatkowa wizualizacja
+    X, _ = make_blobs(n_samples=len(data), centers=k, random_state=0)
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(X)
+    centroids_sklearn = kmeans.cluster_centers_
+
+    # Tworzenie wykresu
+    plt.scatter(X[:, 0], X[:, 1], c=kmeans.labels_, cmap='viridis')
+    plt.scatter(centroids_sklearn[:, 0], centroids_sklearn[:, 1], marker='X', color='red', s=200)
+    plt.title('K-Means Clustering')
+    plt.xlabel('Feature 1')
+    plt.ylabel('Feature 2')
+    plt.show()
