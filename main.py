@@ -6,6 +6,16 @@ import math
 def read_csv(file):
     """
     Wczytanie danych z pliku csv z pominięciem ostatniej kolumny, która zawiera etykiety.
+
+    Parametery
+    ------------
+    file : str
+        Nazwa pliku csv
+
+    Zwraca
+    ------------
+    data : list
+        Lista punktów z pliku csv
     """
     with open(file, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
@@ -15,6 +25,20 @@ def read_csv(file):
 def mean_centroids(data, assignment, k):
     """
     Metoda obliczająca średnią arytmetyczną puntków dla każdego klastra.
+
+    Parametry
+    ------------
+    data : list
+        Lista punktów
+    assignment : list
+        Lista przypisania punktów do klastrów
+    k : int
+        Liczba klastrów
+
+    Zwraca
+    ------------
+    centroids : list
+        Lista średnich arytmetycznych punktów dla każdego klastra
     """
     centroids = []
     for i in range(k):
@@ -27,6 +51,18 @@ def mean_centroids(data, assignment, k):
 def euclidean_distance(p1, p2):
     """
     Metoda obliczająca odległość euklidesową między dwoma punktami.
+
+    Parametry
+    ------------
+    p1 : list
+        Punkt 1
+    p2 : list
+        Punkt 2
+
+    Zwraca
+    ------------
+    distance : float
+        Odległość euklidesowa między punktami p1 i p2
     """
     return math.sqrt(sum([(x1 - x2) ** 2 for x1, x2 in zip(p1, p2)]))
 
@@ -34,6 +70,18 @@ def euclidean_distance(p1, p2):
 def assign_to_centroids(data, centroids):
     """
     Metoda przypisująca punkty do klastrów na podstawie odległości euklidesowej.
+
+    Parametry
+    ------------
+    data : list
+        Lista punktów
+    centroids : list
+        Lista średnich arytmetycznych punktów dla każdego klastra
+
+    Zwraca
+    ------------
+    assignment : list
+        Lista przypisania punktów do klastrów
     """
     assignment = []
     for i in range(len(data)):
@@ -45,6 +93,20 @@ def assign_to_centroids(data, centroids):
 def sum_of_squares(data, centroids, assignment):
     """
     Metoda obliczająca sumę kwadratów odległości w klastrach.
+
+    Parametry
+    ------------
+    data : list
+        Lista punktów
+    centroids : list
+        Lista średnich arytmetycznych punktów dla każdego klastra
+    assignment : list
+        Lista przypisania punktów do klastrów
+
+    Zwraca
+    ------------
+    total : float
+        Suma kwadratów odległości w klastrach
     """
     total = 0
     for i in range(len(data)):
@@ -55,6 +117,17 @@ def sum_of_squares(data, centroids, assignment):
 def k_means(data, k):
     """
     Metoda implementująca algorytm k-średnich.
+
+    Parametry
+    ------------
+    data : list
+        Lista punktów
+    k : int
+        Liczba klastrów
+
+    Zwraca
+    ------------
+    Wyświetla wyniki działania algorytmu
     """
 
     assignment = [random.randint(0, k - 1) for _ in range(len(data))]
